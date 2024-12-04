@@ -37,31 +37,13 @@ public class Main extends Operations {
                         case 1:
                             //Добавить книгу
                             System.out.println("ДОБАВЛЕНИЕ КНИГИ\n");
-                            System.out.print("Название: ");
-                            scanner.nextLine();
-                            String title = scanner.nextLine();
-                            System.out.print("Автор: ");
-                            String author = scanner.nextLine();
-                            System.out.print("Издательство: ");
-                            String publisher = scanner.nextLine();
-                            System.out.print("Год издания книги: ");
-                            int year = scanner.nextInt();
-                            System.out.print("Раздел библиотеки: ");
-                            scanner.nextLine();
-                            String section = scanner.nextLine();
-                            Book book = new Book(author, title, publisher, year, section);
-                            listOfBooks.add(book);
-                            saveChanges(listOfBooks);
+                            addBook(listOfBooks);
                             break;
                         case 2:
                             //Удалить книгу
                             System.out.println("УДАЛЕНИЕ КНИГИ\n\nСписок книг:");
                             if (!listOfBooks.isEmpty()) {
-                                int bookCount = 1;
-                                for (Book book1 : listOfBooks) {
-                                    System.out.println("\t" + bookCount + ". " + book1.getTitle() + ", " + book1.getAuthor() + " " + book1.getYear());
-                                    bookCount++;
-                                }
+                                printBooks(listOfBooks);
                                 System.out.print("Номер удаляемой книги (0 для отмены): ");
                                 int deleteIndex = (scanner.nextInt()) - 1;
                                 if (deleteIndex != -1) {
@@ -70,6 +52,7 @@ public class Main extends Operations {
                                         System.out.println("Вы действительно хотите удалить книгу?(y/n)");
                                         scanner.nextLine();
                                         String answer = scanner.nextLine();
+
                                         switch (answer) {
                                             case "Y":
                                             case "y":
@@ -94,7 +77,55 @@ public class Main extends Operations {
                             break;
                         case 3:
                             //Просмотр картотеки
-
+                            System.out.print("""
+                                       1) Поиск
+                                       2) Список книг
+                                    """);
+                            System.out.print("Выберите действие: ");
+                            int viewOption = scanner.nextInt();
+                            System.out.println("---------------------------------------");
+                            switch (viewOption){
+                                case 1:
+                                    //Поиск по картотеке
+                                    System.out.print("""
+                                    Поиск по:
+                                       1) Автору
+                                       2) Названию
+                                       3) Издательству
+                                       4) Году
+                                       5) Разделу
+                                    """);
+                                    System.out.print("Выберите параметр: ");
+                                    int searchParameter = scanner.nextInt();
+                                    System.out.print("Запрос: ");
+                                    scanner.nextLine();
+                                    String searchRequest = scanner.nextLine();
+                                    System.out.print("\n");
+                                    switch (searchParameter){
+                                        case 1:
+                                            printBooks(listOfBooks, SearchOptions.AUTHOR, searchRequest);
+                                            break;
+                                        case 2:
+                                            printBooks(listOfBooks, SearchOptions.TITLE, searchRequest);
+                                            break;
+                                        case 3:
+                                            printBooks(listOfBooks, SearchOptions.PUBLISHER, searchRequest);
+                                            break;
+                                        case 4:
+                                            printBooks(listOfBooks, SearchOptions.YEAR, searchRequest);
+                                            break;
+                                        case 5:
+                                            printBooks(listOfBooks, SearchOptions.SECTION, searchRequest);
+                                            break;
+                                        default:
+                                            System.out.println("Неправильный ввод!");
+                                            break;
+                                    }
+                                    break;
+                                case 2:
+                                    System.out.println("ВСЕ КНИГИ\n");
+                                    printBooks(listOfBooks);
+                            }
                             break;
                         default:
                             System.out.println("Неправильный ввод!");
