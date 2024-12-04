@@ -1,14 +1,14 @@
 package org.example;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import java.util.ArrayList;
 import java.io.*;
 
 public class Operations{
-    public static List<Book> getBooksFromJson(){
-        List<Book> books = new ArrayList<>();
-        //TODO
+    public static List<Book> getBooksFromJson() throws IOException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Book> books = objectMapper.readValue(new File("books.txt"), new TypeReference<>() {});
         return books;
     }
 

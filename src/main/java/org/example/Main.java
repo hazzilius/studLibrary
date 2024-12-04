@@ -9,9 +9,13 @@ public class Main extends Operations {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         List<Book> listOfBooks = new ArrayList<>();
-        File saveFile = new File("books.json");
+        File saveFile = new File("books.txt");
         if (saveFile.exists()) {
-            listOfBooks = getBooksFromJson();
+            try {
+                listOfBooks = getBooksFromJson();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         while (true) {
@@ -19,7 +23,7 @@ public class Main extends Operations {
             System.out.print("""
                 1) Добавить книгу
                 2) Удалить книгу
-                3) Поиск по книгам
+                3) Просмотр картотеки
                 4) Выход из программы
                """);
             System.out.print("Выберите действие: ");
