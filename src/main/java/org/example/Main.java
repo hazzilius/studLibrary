@@ -21,10 +21,10 @@ public class Main extends Operations {
         while (true) {
             //Меню
             System.out.print("""
-                1) Добавить книгу
-                2) Удалить книгу
-                3) Просмотр картотеки
-                4) Выход из программы
+                  1) Добавить книгу
+                  2) Удалить книгу
+                  3) Просмотр картотеки
+                  4) Выход из программы
                """);
             System.out.print("Выберите действие: ");
             int option = scanner.nextInt();
@@ -55,29 +55,40 @@ public class Main extends Operations {
                         break;
                     case 2:
                         //Удалить книгу
-                        System.out.println("УДАЛЕНИЕ КНИГИ\n");
-                        System.out.print("Введите номер книги: ");
-                        int deleteIndex = scanner.nextInt();
-                        try {
-                            System.out.println(listOfBooks.get(deleteIndex));
-                            System.out.println("Вы действительно хотите удалить книгу?(y/n)");
-                            scanner.nextLine();
-                            String answer = scanner.nextLine();
-                            switch (answer) {
-                                case "Y":
-                                case "y":
-                                    listOfBooks.remove(deleteIndex);
-                                    saveChanges(listOfBooks);
-                                    break;
-                                case "N":
-                                case "n":
-                                    break;
-                                default:
-                                    System.out.println("Неправильный ввод!");
-                                    break;
+                        System.out.println("УДАЛЕНИЕ КНИГИ\n\nСписок книг:");
+                        if (!listOfBooks.isEmpty()){
+                            int bookCount = 1;
+                            for (Book book1 : listOfBooks){
+                                System.out.println("\t" + bookCount + ". " + book1.getTitle() + ", " + book1.getAuthor() + " " + book1.getYear());
+                                bookCount++;
                             }
-                        } catch (IndexOutOfBoundsException e) {
-                            System.out.println("Такой книги нет!");
+                            System.out.print("Номер удаляемой книги (0 для отмены): ");
+                            int deleteIndex = (scanner.nextInt())-1;
+                            if (deleteIndex != -1){
+                                try {
+                                    System.out.println(listOfBooks.get(deleteIndex));
+                                    System.out.println("Вы действительно хотите удалить книгу?(y/n)");
+                                    scanner.nextLine();
+                                    String answer = scanner.nextLine();
+                                    switch (answer) {
+                                        case "Y":
+                                        case "y":
+                                            listOfBooks.remove(deleteIndex);
+                                            saveChanges(listOfBooks);
+                                            break;
+                                        case "N":
+                                        case "n":
+                                            break;
+                                        default:
+                                            System.out.println("Неправильный ввод!");
+                                            break;
+                                    }
+                                } catch (IndexOutOfBoundsException e) {
+                                    System.out.println("Такой книги нет!");
+                                }
+                            }
+                        } else {
+                            System.out.println("Нет книг!");
                         }
                         break;
                     case 3:
