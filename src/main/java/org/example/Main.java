@@ -1,9 +1,9 @@
 package org.example;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Main extends Operations {
     public static void main(String[] args){
@@ -27,87 +27,85 @@ public class Main extends Operations {
                   4) Выход из программы
                """);
             System.out.print("Выберите действие: ");
-            int option = scanner.nextInt();
-            if (option == 4) {
-                break;
-            } else {
-                System.out.println("---------------------------------------");
-                switch (option) {
-                    case 1:
-                        //Добавить книгу
-                        System.out.println("ДОБАВЛЕНИЕ КНИГИ\n");
-                        System.out.print("Название: ");
-                        scanner.nextLine();
-                        String title = scanner.nextLine();
-                        System.out.print("Автор: ");
-                        String author = scanner.nextLine();
-                        System.out.print("Издательство: ");
-                        String publisher = scanner.nextLine();
-                        System.out.print("Год издания книги: ");
-                        int year = scanner.nextInt();
-                        System.out.print("Раздел библиотеки: ");
-                        scanner.nextLine();
-                        String section = scanner.nextLine();
-                        Book book = new Book(author, title, publisher, year, section);
-
-                        listOfBooks.add(book);
-                        saveChanges(listOfBooks);
-                        break;
-                    case 2:
-                        //Удалить книгу
-                        System.out.println("УДАЛЕНИЕ КНИГИ\n\nСписок книг:");
-                        if (!listOfBooks.isEmpty()){
-                            int bookCount = 1;
-                            for (Book book1 : listOfBooks){
-                                System.out.println("\t" + bookCount + ". " + book1.getTitle() + ", " + book1.getAuthor() + " " + book1.getYear());
-                                bookCount++;
-                            }
-                            System.out.print("Номер удаляемой книги (0 для отмены): ");
-                            int deleteIndex = (scanner.nextInt())-1;
-                            if (deleteIndex != -1){
-                                try {
-                                    System.out.println(listOfBooks.get(deleteIndex));
-                                    System.out.println("Вы действительно хотите удалить книгу?(y/n)");
-                                    scanner.nextLine();
-                                    String answer = scanner.nextLine();
-                                    switch (answer) {
-                                        case "Y":
-                                        case "y":
-                                            listOfBooks.remove(deleteIndex);
-                                            saveChanges(listOfBooks);
-                                            break;
-                                        case "N":
-                                        case "n":
-                                            break;
-                                        default:
-                                            System.out.println("Неправильный ввод!");
-                                            break;
-                                    }
-                                } catch (IndexOutOfBoundsException e) {
-                                    System.out.println("Такой книги нет!");
+            try {
+                int option = scanner.nextInt();
+                if (option == 4) {
+                    break;
+                } else {
+                    System.out.println("---------------------------------------");
+                    switch (option) {
+                        case 1:
+                            //Добавить книгу
+                            System.out.println("ДОБАВЛЕНИЕ КНИГИ\n");
+                            System.out.print("Название: ");
+                            scanner.nextLine();
+                            String title = scanner.nextLine();
+                            System.out.print("Автор: ");
+                            String author = scanner.nextLine();
+                            System.out.print("Издательство: ");
+                            String publisher = scanner.nextLine();
+                            System.out.print("Год издания книги: ");
+                            int year = scanner.nextInt();
+                            System.out.print("Раздел библиотеки: ");
+                            scanner.nextLine();
+                            String section = scanner.nextLine();
+                            Book book = new Book(author, title, publisher, year, section);
+                            listOfBooks.add(book);
+                            saveChanges(listOfBooks);
+                            break;
+                        case 2:
+                            //Удалить книгу
+                            System.out.println("УДАЛЕНИЕ КНИГИ\n\nСписок книг:");
+                            if (!listOfBooks.isEmpty()) {
+                                int bookCount = 1;
+                                for (Book book1 : listOfBooks) {
+                                    System.out.println("\t" + bookCount + ". " + book1.getTitle() + ", " + book1.getAuthor() + " " + book1.getYear());
+                                    bookCount++;
                                 }
+                                System.out.print("Номер удаляемой книги (0 для отмены): ");
+                                int deleteIndex = (scanner.nextInt()) - 1;
+                                if (deleteIndex != -1) {
+                                    try {
+                                        System.out.println("\n" + listOfBooks.get(deleteIndex));
+                                        System.out.println("Вы действительно хотите удалить книгу?(y/n)");
+                                        scanner.nextLine();
+                                        String answer = scanner.nextLine();
+                                        switch (answer) {
+                                            case "Y":
+                                            case "y":
+                                                listOfBooks.remove(deleteIndex);
+                                                saveChanges(listOfBooks);
+                                                System.out.println("Удалено!");
+                                                break;
+                                            case "N":
+                                            case "n":
+                                                break;
+                                            default:
+                                                System.out.println("Неправильный ввод!");
+                                                break;
+                                        }
+                                    } catch (IndexOutOfBoundsException e) {
+                                        System.out.println("Такой книги нет!");
+                                    }
+                                }
+                            } else {
+                                System.out.println("Нет книг!");
                             }
-                        } else {
-                            System.out.println("Нет книг!");
-                        }
-                        break;
-                    case 3:
-                        //Поиск по книгам
-                        break;
-                    default:
-                        System.out.println("Неправильный ввод!");
-                        break;
-                }
-                System.out.println("---------------------------------------");
-            }
-        }
-    }
+                            break;
+                        case 3:
+                            //Просмотр картотеки
 
-    static void saveChanges (List<Book> listOfBooks){
-        try {
-            saveBooksInJson(listOfBooks);
-        } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
+                            break;
+                        default:
+                            System.out.println("Неправильный ввод!");
+                            break;
+                    }
+                    System.out.println("---------------------------------------");
+                }
+            } catch (InputMismatchException e){
+                System.out.println("---------------------------------------\nНеправильный ввод!\n---------------------------------------");
+                scanner.nextLine();
+            }
         }
     }
 }

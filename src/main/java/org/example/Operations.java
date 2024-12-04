@@ -20,4 +20,12 @@ public class Operations{
             System.out.println(e.getMessage());
         }
     }
+
+    static void saveChanges(List<Book> listOfBooks){
+        try {
+            saveBooksInJson(listOfBooks);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
