@@ -8,8 +8,7 @@ import java.io.*;
 public class Operations{
     public static List<Book> getBooksFromJson() throws IOException{
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Book> books = objectMapper.readValue(new File("books.txt"), new TypeReference<>() {});
-        return books;
+        return objectMapper.readValue(new File("books.txt"), new TypeReference<>() {});
     }
 
     public static void saveBooksInJson(List<Book> books) throws JsonProcessingException {

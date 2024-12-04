@@ -51,14 +51,34 @@ public class Main extends Operations {
                         Book book = new Book(author, title, publisher, year, section);
 
                         listOfBooks.add(book);
-                        try {
-                            saveBooksInJson(listOfBooks);
-                        } catch (JsonProcessingException e) {
-                            System.out.println(e.getMessage());
-                        }
+                        saveChanges(listOfBooks);
                         break;
                     case 2:
                         //Удалить книгу
+                        System.out.println("УДАЛЕНИЕ КНИГИ\n");
+                        System.out.print("Введите номер книги: ");
+                        int deleteIndex = scanner.nextInt();
+                        try {
+                            System.out.println(listOfBooks.get(deleteIndex));
+                            System.out.println("Вы действительно хотите удалить книгу?(y/n)");
+                            scanner.nextLine();
+                            String answer = scanner.nextLine();
+                            switch (answer) {
+                                case "Y":
+                                case "y":
+                                    listOfBooks.remove(deleteIndex);
+                                    saveChanges(listOfBooks);
+                                    break;
+                                case "N":
+                                case "n":
+                                    break;
+                                default:
+                                    System.out.println("Неправильный ввод!");
+                                    break;
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("Такой книги нет!");
+                        }
                         break;
                     case 3:
                         //Поиск по книгам
@@ -69,6 +89,14 @@ public class Main extends Operations {
                 }
                 System.out.println("---------------------------------------");
             }
+        }
+    }
+
+    static void saveChanges (List<Book> listOfBooks){
+        try {
+            saveBooksInJson(listOfBooks);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
