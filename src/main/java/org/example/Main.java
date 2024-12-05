@@ -9,6 +9,8 @@ public class Main extends Operations {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         List<Book> listOfBooks = new ArrayList<>();
+
+        //Получение данных из файла (при наличии)
         File saveFile = new File("books.txt");
         if (saveFile.exists()) {
             try {
@@ -17,7 +19,14 @@ public class Main extends Operations {
                 System.out.println(e.getMessage());
             }
         }
-
+        System.out.print("""
+                    __    ________  ____  ___    ______  __        ___ ____\s
+                   / /   /  _/ __ )/ __ \\/   |  / __ \\ \\/ /  _   _<  // __ \\
+                  / /    / // __  / /_/ / /| | / /_/ /\\  /  | | / / // / / /
+                 / /____/ // /_/ / _, _/ ___ |/ _, _/ / /   | |/ / // /_/ /\s
+                /_____/___/_____/_/ |_/_/  |_/_/ |_| /_/    |___/_(_)____/ \s
+                ---------------------------------------\s
+                """);
         while (true) {
             //Меню
             System.out.print("""
@@ -30,6 +39,7 @@ public class Main extends Operations {
             try {
                 int option = scanner.nextInt();
                 if (option == 4) {
+                    //Выход из программы
                     break;
                 } else {
                     System.out.println("---------------------------------------");
@@ -42,38 +52,7 @@ public class Main extends Operations {
                         case 2:
                             //Удалить книгу
                             System.out.println("УДАЛЕНИЕ КНИГИ\n\nСписок книг:");
-                            if (!listOfBooks.isEmpty()) {
-                                printBooks(listOfBooks);
-                                System.out.print("Номер удаляемой книги (0 для отмены): ");
-                                int deleteIndex = (scanner.nextInt()) - 1;
-                                if (deleteIndex != -1) {
-                                    try {
-                                        System.out.println("\n" + listOfBooks.get(deleteIndex));
-                                        System.out.println("Вы действительно хотите удалить книгу?(y/n)");
-                                        scanner.nextLine();
-                                        String answer = scanner.nextLine();
-
-                                        switch (answer) {
-                                            case "Y":
-                                            case "y":
-                                                listOfBooks.remove(deleteIndex);
-                                                saveChanges(listOfBooks);
-                                                System.out.println("Удалено!");
-                                                break;
-                                            case "N":
-                                            case "n":
-                                                break;
-                                            default:
-                                                System.out.println("Неправильный ввод!");
-                                                break;
-                                        }
-                                    } catch (IndexOutOfBoundsException e) {
-                                        System.out.println("Такой книги нет!");
-                                    }
-                                }
-                            } else {
-                                System.out.println("Нет книг!");
-                            }
+                            removeBook(listOfBooks);
                             break;
                         case 3:
                             //Просмотр картотеки
@@ -123,8 +102,13 @@ public class Main extends Operations {
                                     }
                                     break;
                                 case 2:
+                                    //Вывод списка книг
                                     System.out.println("ВСЕ КНИГИ\n");
                                     printBooks(listOfBooks);
+                                    break;
+                                    default:
+                                        System.out.println("Неправильный ввод!");
+                                        break;
                             }
                             break;
                         default:

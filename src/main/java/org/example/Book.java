@@ -65,8 +65,4 @@ public class Book {
                 "Год издания: " + year + "\n" +
                 "Раздел библиотеки: " + section + "\n";
     }
-
-    public String toShortString(){
-        return author + ", " + title + ", " + publisher + ", " + year + ", " + section;
-    }
 }
